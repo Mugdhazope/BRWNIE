@@ -41,12 +41,39 @@ function initFeaturedAnimations() {
 
     gsap.from("#featured-header", {
         y: 40, opacity: 0, duration: 1, ease: "power3.out",
-        scrollTrigger: { trigger: "#featured", scroller: "body", start: "top 85%", toggleActions: "play none none none" }
+        scrollTrigger: {
+            trigger: "#featured",
+            scroller: "body",
+            start: "top 85%",
+            toggleActions: "play none none none"
+        }
     });
 
     gsap.from(cards, {
-        y: 50, opacity: 0, duration: 0.9, stagger: isMobile ? 0.06 : 0.12, ease: "power3.out",
-        scrollTrigger: { trigger: "#featured-grid", scroller: "body", start: "top 90%", toggleActions: "play none none none" }
+        y: 60,
+        opacity: 0,
+        duration: 0.9,
+        stagger: isMobile ? 0.1 : 0.12,
+        ease: "power3.out",
+        scrollTrigger: {
+            trigger: "#featured-grid",
+            scroller: "body",
+            start: "top 92%",
+            toggleActions: "play none none none"
+        }
+    });
+
+    gsap.from("#featured-footer", {
+        y: 20,
+        opacity: 0,
+        duration: 0.8,
+        ease: "power2.out",
+        scrollTrigger: {
+            trigger: "#featured-footer",
+            scroller: "body",
+            start: "top 95%",
+            toggleActions: "play none none none"
+        }
     });
 }
 
@@ -56,8 +83,44 @@ function initFeaturedAnimations() {
    ============================================================ */
 function pageOne() {
     if (isMobile) {
-        gsap.to("#video-container", { top: "0%", duration: 0 });
-        gsap.to("#video-container video", { transform: "scale(1)", duration: 0 });
+        /* Mobile: animate the h1 title off to the left as user scrolls,
+           then reveal the video. No pinning — scroll-triggered scrub. */
+        gsap.to("#page1 h1", {
+            x: "-60%",
+            opacity: 0,
+            ease: "power2.in",
+            scrollTrigger: {
+                trigger: "#page1",
+                scroller: "body",
+                start: "top top",
+                end: "bottom 60%",
+                scrub: 2
+            }
+        });
+
+        gsap.to("#video-container", {
+            top: "0%",
+            ease: "power2.out",
+            scrollTrigger: {
+                trigger: "#page1",
+                scroller: "body",
+                start: "top top",
+                end: "bottom 80%",
+                scrub: 3
+            }
+        });
+
+        gsap.to("#video-container video", {
+            scale: 1,
+            ease: "power2.out",
+            scrollTrigger: {
+                trigger: "#page1",
+                scroller: "body",
+                start: "top top",
+                end: "bottom 40%",
+                scrub: 3
+            }
+        });
         return;
     }
 
@@ -96,7 +159,7 @@ if (!isMobile) {
 
 /* ============================================================
    PAGE 2 — SPLIT QUOTE PANEL
-   Mobile: simple fade-up, no pin, no break animation.
+   Mobile: full animated scrub reveal with text flying in.
    Desktop: full scrub pin with split-break exit.
    ============================================================ */
 function pageTwo() {
@@ -104,18 +167,64 @@ function pageTwo() {
     gsap.set(".split-sub", { opacity: 0 });
 
     if (isMobile) {
+        /* LEFT side — staggered fly-up */
         gsap.to(["#ql1","#ql2","#ql3"], {
-            yPercent: 0, duration: 1, stagger: 0.12, ease: "power3.out",
-            scrollTrigger: { trigger: "#splitLeft", scroller: "body", start: "top 80%", toggleActions: "play none none none" }
+            yPercent: 0,
+            duration: 1.2,
+            stagger: 0.15,
+            ease: "power4.out",
+            scrollTrigger: {
+                trigger: "#splitLeft",
+                scroller: "body",
+                start: "top 75%",
+                toggleActions: "play none none none"
+            }
         });
+
+        /* RIGHT side — slightly delayed */
         gsap.to(["#ql4","#ql5","#ql6"], {
-            yPercent: 0, duration: 1, stagger: 0.12, ease: "power3.out",
-            scrollTrigger: { trigger: "#splitRight", scroller: "body", start: "top 80%", toggleActions: "play none none none" }
+            yPercent: 0,
+            duration: 1.2,
+            stagger: 0.15,
+            ease: "power4.out",
+            delay: 0.2,
+            scrollTrigger: {
+                trigger: "#splitRight",
+                scroller: "body",
+                start: "top 75%",
+                toggleActions: "play none none none"
+            }
         });
+
+        /* Subtext fades in after titles */
         gsap.to(".split-sub", {
-            opacity: 1, duration: 0.8, stagger: 0.1,
-            scrollTrigger: { trigger: "#splitLeft", scroller: "body", start: "top 60%", toggleActions: "play none none none" }
+            opacity: 1,
+            duration: 1,
+            stagger: 0.12,
+            ease: "power2.out",
+            scrollTrigger: {
+                trigger: "#splitLeft",
+                scroller: "body",
+                start: "top 55%",
+                toggleActions: "play none none none"
+            }
         });
+
+        /* Eyebrows slide in from left */
+        gsap.from(".split-eyebrow", {
+            x: -30,
+            opacity: 0,
+            duration: 0.8,
+            stagger: 0.15,
+            ease: "power3.out",
+            scrollTrigger: {
+                trigger: "#page2",
+                scroller: "body",
+                start: "top 80%",
+                toggleActions: "play none none none"
+            }
+        });
+
         return;
     }
 
@@ -147,16 +256,50 @@ pageTwo();
 
 
 /* ============================================================
-   MANIFESTO — entrance
+   MANIFESTO — entrance (both mobile & desktop)
    ============================================================ */
 gsap.from("#manifesto-ghost", {
-    x: "-5%", opacity: 0, duration: 1.4, ease: "power3.out",
-    scrollTrigger: { trigger: "#manifesto", scroller: "body", start: "top 85%", toggleActions: "play none none none" }
+    x: isMobile ? "-8%" : "-5%",
+    opacity: 0,
+    duration: 1.4,
+    ease: "power3.out",
+    scrollTrigger: {
+        trigger: "#manifesto",
+        scroller: "body",
+        start: "top 88%",
+        toggleActions: "play none none none"
+    }
 });
+
 gsap.from("#manifesto-content", {
-    y: 30, opacity: 0, duration: 1, ease: "power3.out",
-    scrollTrigger: { trigger: "#manifesto", scroller: "body", start: "top 80%", toggleActions: "play none none none" }
+    y: 30,
+    opacity: 0,
+    duration: 1,
+    ease: "power3.out",
+    scrollTrigger: {
+        trigger: "#manifesto",
+        scroller: "body",
+        start: "top 82%",
+        toggleActions: "play none none none"
+    }
 });
+
+/* Mobile: also animate manifesto text lines one by one */
+if (isMobile) {
+    gsap.from("#manifesto-cta", {
+        y: 16,
+        opacity: 0,
+        duration: 0.8,
+        ease: "power2.out",
+        delay: 0.3,
+        scrollTrigger: {
+            trigger: "#manifesto-cta",
+            scroller: "body",
+            start: "top 92%",
+            toggleActions: "play none none none"
+        }
+    });
+}
 
 
 /* ============================================================
@@ -166,8 +309,13 @@ function initContextAnimations() {
     const items = document.querySelectorAll(".ctx-item");
     if (!items.length) return;
     const io = new IntersectionObserver((entries) => {
-        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in-view"); io.unobserve(e.target); } });
-    }, { threshold: 0.15 });
+        entries.forEach(e => {
+            if (e.isIntersecting) {
+                e.target.classList.add("in-view");
+                io.unobserve(e.target);
+            }
+        });
+    }, { threshold: 0.12 });
     items.forEach(el => io.observe(el));
 }
 initContextAnimations();
@@ -175,16 +323,77 @@ initContextAnimations();
 
 /* ============================================================
    PAGE 3 — IMAGE SLIDESHOW
-   Mobile: static stacked cards with fade-in.
+   Mobile: stacked cards with staggered fly-up reveals.
    Desktop: GSAP pin slideshow.
    ============================================================ */
 function pg3() {
     if (isMobile) {
-        document.querySelectorAll(".p").forEach((panel) => {
+        /* Each card flies up from below as it enters viewport */
+        document.querySelectorAll(".p").forEach((panel, i) => {
             gsap.from(panel, {
-                y: 40, opacity: 0, duration: 0.7, ease: "power2.out",
-                scrollTrigger: { trigger: panel, scroller: "body", start: "top 90%", toggleActions: "play none none none" }
+                y: 60,
+                opacity: 0,
+                duration: 0.85,
+                ease: "power3.out",
+                scrollTrigger: {
+                    trigger: panel,
+                    scroller: "body",
+                    start: "top 94%",
+                    toggleActions: "play none none none"
+                }
             });
+
+            /* Image inside each card does a subtle scale reveal */
+            const img = panel.querySelector("img");
+            if (img) {
+                gsap.from(img, {
+                    scale: 1.08,
+                    duration: 1.2,
+                    ease: "power2.out",
+                    scrollTrigger: {
+                        trigger: panel,
+                        scroller: "body",
+                        start: "top 94%",
+                        toggleActions: "play none none none"
+                    }
+                });
+            }
+
+            /* Label slides in from left */
+            const label = panel.querySelector(".p-label");
+            if (label) {
+                gsap.from(label, {
+                    x: -20,
+                    opacity: 0,
+                    duration: 0.7,
+                    delay: 0.15,
+                    ease: "power2.out",
+                    scrollTrigger: {
+                        trigger: panel,
+                        scroller: "body",
+                        start: "top 94%",
+                        toggleActions: "play none none none"
+                    }
+                });
+            }
+
+            /* Shop btn slides in from right */
+            const btn = panel.querySelector(".p-shop-btn");
+            if (btn) {
+                gsap.from(btn, {
+                    x: 20,
+                    opacity: 0,
+                    duration: 0.7,
+                    delay: 0.2,
+                    ease: "power2.out",
+                    scrollTrigger: {
+                        trigger: panel,
+                        scroller: "body",
+                        start: "top 94%",
+                        toggleActions: "play none none none"
+                    }
+                });
+            }
         });
         return;
     }
@@ -228,7 +437,7 @@ gsap.to("#main", {
 
 
 /* ============================================================
-   PAGE 4 — only pin on desktop
+   PAGE 4 — mobile gets scroll-triggered video entrance
    ============================================================ */
 if (!isMobile) {
     var tl4 = gsap.timeline({
@@ -245,8 +454,145 @@ if (!isMobile) {
         .from("#page4 #video-container2", { y: "100vh", delay: 1, duration: 1 })
         .to("#page4 #video-container2 video", { delay: 1, duration: 2, transform: "scale(1)" });
 } else {
-    gsap.set("#page4 #video-container2", { y: 0 });
+    /* Mobile: video slides up as you scroll into page4 */
+    gsap.set("#page4 #video-container2", { y: 60, opacity: 0 });
     gsap.set("#page4 #video-container2 video", { transform: "scale(1)" });
+
+    gsap.to("#page4 #video-container2", {
+        y: 0,
+        opacity: 1,
+        duration: 1,
+        ease: "power3.out",
+        scrollTrigger: {
+            trigger: "#page4 #video-container2",
+            scroller: "body",
+            start: "top 90%",
+            toggleActions: "play none none none"
+        }
+    });
+
+    /* Page 4 headline big text flies in */
+    gsap.from("#page4 > h1", {
+        y: 40,
+        opacity: 0,
+        duration: 1,
+        ease: "power3.out",
+        scrollTrigger: {
+            trigger: "#page4 > h1",
+            scroller: "body",
+            start: "top 85%",
+            toggleActions: "play none none none"
+        }
+    });
+
+    /* Shop More link */
+    gsap.from(".more h1", {
+        y: 20,
+        opacity: 0,
+        duration: 0.7,
+        ease: "power2.out",
+        scrollTrigger: {
+            trigger: ".more",
+            scroller: "body",
+            start: "top 88%",
+            toggleActions: "play none none none"
+        }
+    });
+
+    /* Page 4 body text */
+    gsap.from(["#page4 h5", "#page4 h6"], {
+        y: 20,
+        opacity: 0,
+        duration: 0.7,
+        stagger: 0.15,
+        ease: "power2.out",
+        scrollTrigger: {
+            trigger: "#page4 h5",
+            scroller: "body",
+            start: "top 88%",
+            toggleActions: "play none none none"
+        }
+    });
+}
+
+
+/* ============================================================
+   PAGE 6 — animated entrance on mobile
+   ============================================================ */
+if (isMobile) {
+    gsap.from("#page6 h1", {
+        y: 50,
+        opacity: 0,
+        duration: 1.1,
+        ease: "power3.out",
+        scrollTrigger: {
+            trigger: "#page6",
+            scroller: "body",
+            start: "top 80%",
+            toggleActions: "play none none none"
+        }
+    });
+
+    gsap.from(["#page6 h5", "#page6 h6"], {
+        y: 24,
+        opacity: 0,
+        duration: 0.8,
+        stagger: 0.15,
+        ease: "power2.out",
+        scrollTrigger: {
+            trigger: "#page6 h5",
+            scroller: "body",
+            start: "top 85%",
+            toggleActions: "play none none none"
+        }
+    });
+}
+
+
+/* ============================================================
+   FOOTER — animated entrance on mobile
+   ============================================================ */
+if (isMobile) {
+    gsap.from("#footer #left p", {
+        y: 20,
+        opacity: 0,
+        duration: 0.8,
+        ease: "power2.out",
+        scrollTrigger: {
+            trigger: "#footer",
+            scroller: "body",
+            start: "top 88%",
+            toggleActions: "play none none none"
+        }
+    });
+
+    gsap.from("#footer #left #logo h1", {
+        y: 30,
+        opacity: 0,
+        duration: 1,
+        stagger: 0.1,
+        ease: "power3.out",
+        scrollTrigger: {
+            trigger: "#footer #left #logo",
+            scroller: "body",
+            start: "top 90%",
+            toggleActions: "play none none none"
+        }
+    });
+
+    gsap.from(["#social h4", "#mail #home h4"], {
+        y: 16,
+        opacity: 0,
+        duration: 0.6,
+        stagger: 0.06,
+        ease: "power2.out",
+        scrollTrigger: {
+            trigger: "#footer #right",
+            scroller: "body",
+            start: "top 88%",
+            toggleActions: "play none none none"
+        }
+    });
 }
 
 
@@ -285,20 +631,44 @@ initPage3HoverCursor();
 
 
 /* ============================================================
-   VIDEO AUTOPLAY — iOS Safari
+   VIDEO AUTOPLAY — iOS Safari + Android Chrome fix
    ============================================================ */
-document.addEventListener("DOMContentLoaded", () => {
+function forcePlayAllVideos() {
     document.querySelectorAll("video").forEach(video => {
         video.muted = true;
         video.setAttribute("playsinline", "");
         video.setAttribute("webkit-playsinline", "");
-        const tryPlay = () => { video.play().catch(() => {}); };
-        tryPlay();
-        document.addEventListener("touchstart", tryPlay, { once: true });
-        document.addEventListener("click",      tryPlay, { once: true });
-    });
-});
+        video.setAttribute("preload", "auto");
 
+        const tryPlay = () => {
+            video.play().catch(() => {});
+        };
+
+        // Try immediately
+        tryPlay();
+
+        // Also try on first user gesture (required by some browsers)
+        document.addEventListener("touchstart", tryPlay, { once: true });
+        document.addEventListener("touchend",   tryPlay, { once: true });
+        document.addEventListener("click",      tryPlay, { once: true });
+
+        // Retry if it gets paused (e.g. tab switching on iOS)
+        video.addEventListener("pause", () => {
+            if (video.loop) tryPlay();
+        });
+
+        // If video loads but doesn't autoplay, force it
+        video.addEventListener("loadeddata", tryPlay);
+        video.addEventListener("canplay",    tryPlay);
+    });
+}
+
+document.addEventListener("DOMContentLoaded", forcePlayAllVideos);
+
+// Also fire immediately in case DOM is already ready
+if (document.readyState !== "loading") {
+    forcePlayAllVideos();
+}
 
 /* ============================================================
    INIT ON READY

@@ -732,7 +732,7 @@ body {
     line-height: 0.85;
     letter-spacing: -0.01em;
     color: transparent;
-    -webkit-text-stroke: 1px #161616;
+    -webkit-text-stroke: 1px #6e6b6b;
     user-select: none;
     flex-shrink: 0;
     pointer-events: none;
@@ -1369,7 +1369,7 @@ body {
     }
     #manifesto-ghost {
         font-size: 28vw;
-        -webkit-text-stroke: 1px #131313;
+        -webkit-text-stroke: 1px #6e6d6d;
         margin-bottom: 24px;
     }
     #manifesto-content { max-width: 100%; }
