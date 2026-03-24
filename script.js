@@ -236,17 +236,32 @@ function initPage3HoverCursor() {
     requestAnimationFrame(tick);
   })();
 
-  document.addEventListener("mousemove", (e) => {
+  // Mouse support
+document.addEventListener("mousemove", (e) => {
     mouseX = e.clientX;
     mouseY = e.clientY;
-  });
+});
 
-  document.querySelectorAll("#page3 .p").forEach((panel) => {
+// Touch support
+document.addEventListener("touchmove", (e) => {
+    const touch = e.touches[0];
+    mouseX = touch.clientX;
+    mouseY = touch.clientY;
+}, { passive: true });
+
+document.querySelectorAll("#page3 .p").forEach((panel) => {
     const img = panel.querySelector("img");
     if (!img) return;
+
+    // Mouse
     img.addEventListener("mouseenter", () => cursor.classList.add("visible"));
     img.addEventListener("mouseleave", () => cursor.classList.remove("visible"));
-  });
+
+    // Touch
+    img.addEventListener("touchstart", () => cursor.classList.add("visible"), { passive: true });
+    img.addEventListener("touchend", () => cursor.classList.remove("visible"));
+    img.addEventListener("touchcancel", () => cursor.classList.remove("visible"));
+});
 }
 
 initPage3HoverCursor();
