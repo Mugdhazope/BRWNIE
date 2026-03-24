@@ -250,3 +250,21 @@ function initPage3HoverCursor() {
 }
 
 initPage3HoverCursor();
+
+// Force autoplay on iOS Safari
+document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll("video").forEach(video => {
+        video.muted = true;
+        video.setAttribute("playsinline", "");
+        video.setAttribute("webkit-playsinline", "");
+        
+        const tryPlay = () => {
+            video.play().catch(() => {});
+        };
+
+        tryPlay();
+
+        document.addEventListener("touchstart", tryPlay, { once: true });
+        document.addEventListener("click", tryPlay, { once: true });
+    });
+});
